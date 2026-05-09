@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naach Leadership · Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–bg: #07060f;
+–surface: #0f0d1c;
+–card: #12101e;
+–card2: #181528;
+–border: rgba(255,255,255,0.07);
+–gold: #e8b450;
+–rose: #e05c8a;
+–violet: #9d6ef5;
+–mint: #52d9a4;
+–text: #f0eaf8;
+–muted: rgba(240,234,248,0.4);
+–danger: #ff5c6a;
+}
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘Outfit’, sans-serif;
+font-weight: 400;
+min-height: 100vh;
+}
+
+/* ── FIXED SIDEBAR ── */
+.layout { display: flex; min-height: 100vh; }
+
+.sidebar {
+width: 220px;
+flex-shrink: 0;
+background: var(–surface);
+border-right: 1px solid var(–border);
+display: flex;
+flex-direction: column;
+padding: 28px 0;
+position: fixed;
+top: 0; left: 0; bottom: 0;
+z-index: 100;
+}
+
+.sidebar-logo {
+padding: 0 20px 28px;
+border-bottom: 1px solid var(–border);
+margin-bottom: 20px;
+}
+.sidebar-logo .wordmark {
+font-family: ‘Playfair Display’, serif;
+font-size: 20px;
+font-weight: 900;
+letter-spacing: -0.02em;
+line-height: 1;
+background: linear-gradient(135deg, var(–gold), var(–rose));
+-webkit-background-clip: text; -webkit-text-fill-color: transparent;
+background-clip: text;
+}
+.sidebar-logo .sub {
+font-size: 10px;
+letter-spacing: 0.2em;
+color: var(–muted);
+text-transform: uppercase;
+margin-top: 4px;
+}
+
+.sidebar-section {
+font-size: 9px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: rgba(240,234,248,0.25);
+padding: 0 20px;
+margin-bottom: 8px;
+margin-top: 8px;
+}
+
+.nav-item {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 10px 20px;
+cursor: pointer;
+font-size: 13px;
+color: var(–muted);
+transition: all 0.15s;
+border-left: 3px solid transparent;
+position: relative;
+}
+.nav-item:hover { color: var(–text); background: rgba(255,255,255,0.03); }
+.nav-item.active { color: var(–gold); border-left-color: var(–gold); background: rgba(232,180,80,0.06); }
+.nav-badge {
+margin-left: auto;
+background: rgba(232,180,80,0.15);
+color: var(–gold);
+font-size: 10px;
+font-weight: 600;
+padding: 2px 8px;
+border-radius: 10px;
+}
+.nav-badge.new { background: rgba(224,92,138,0.2); color: var(–rose); }
+
+.sidebar-footer {
+margin-top: auto;
+padding: 20px;
+border-top: 1px solid var(–border);
+}
+.sidebar-footer p {
+font-size: 10px;
+color: rgba(240,234,248,0.2);
+letter-spacing: 0.1em;
+line-height: 1.8;
+}
+
+/* ── SCHOOL COLOR MAP ── */
+.school-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-all    { background: var(–violet); }
+.dot-chs    { background: #4fc3f7; }
+.dot-phs    { background: #ce93d8; }
+.dot-seneca { background: #80cbc4; }
+.dot-nw     { background: #ffb74d; }
+.dot-rm     { background: #ef9a9a; }
+.dot-blair  { background: #90caf9; }
+
+/* ── MAIN CONTENT ── */
+.main {
+margin-left: 220px;
+flex: 1;
+padding: 36px 36px 60px;
+min-height: 100vh;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 36px;
+}
+.topbar-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 26px;
+font-weight: 700;
+}
+.topbar-title span { font-style: italic; color: var(–gold); }
+
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.search-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 9px 14px;
+color: var(–text);
+font-family: ‘Outfit’, sans-serif;
+font-size: 13px;
+width: 220px;
+outline: none;
+transition: border-color 0.2s;
+}
+.search-box::placeholder { color: var(–muted); }
+.search-box:focus { border-color: rgba(232,180,80,0.4); }
+
+.export-btn {
+background: rgba(232,180,80,0.1);
+border: 1px solid rgba(232,180,80,0.25);
+color: var(–gold);
+font-family: ‘Outfit’, sans-serif;
+font-size: 12px;
+font-weight: 500;
+padding: 9px 18px;
+border-radius: 8px;
+cursor: pointer;
+letter-spacing: 0.05em;
+transition: all 0.2s;
+}
+.export-btn:hover { background: rgba(232,180,80,0.18); }
+
+/* ── STAT CARDS ── */
+.stats-row {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 16px;
+margin-bottom: 32px;
+}
+
+.stat-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 22px 24px;
+position: relative;
+overflow: hidden;
+}
+.stat-card::after {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+}
+.stat-card:nth-child(1)::after { background: var(–violet); }
+.stat-card:nth-child(2)::after { background: var(–mint); }
+.stat-card:nth-child(3)::after { background: var(–gold); }
+.stat-card:nth-child(4)::after { background: var(–rose); }
+
+.stat-label {
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 10px;
+}
+.stat-value {
+font-family: ‘Playfair Display’, serif;
+font-size: 38px;
+font-weight: 700;
+line-height: 1;
+margin-bottom: 8px;
+}
+.stat-card:nth-child(1) .stat-value { color: var(–violet); }
+.stat-card:nth-child(2) .stat-value { color: var(–mint); }
+.stat-card:nth-child(3) .stat-value { color: var(–gold); }
+.stat-card:nth-child(4) .stat-value { color: var(–rose); }
+
+.stat-sub { font-size: 11px; color: var(–muted); }
+
+/* ── SCHOOL PROGRESS BARS ── */
+.school-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 14px;
+margin-bottom: 32px;
+}
+
+.school-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 18px 20px;
+transition: border-color 0.2s;
+cursor: pointer;
+}
+.school-card:hover { border-color: rgba(255,255,255,0.15); }
+.school-card.active-tab { border-color: var(–gold); }
+
+.school-card-top {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 14px;
+}
+.school-card-name {
+font-size: 13px;
+font-weight: 700;
+letter-spacing: 0.08em;
+}
+.school-card-count { font-size: 20px; font-weight: 700; }
+
+.progress-bar {
+height: 4px;
+background: rgba(255,255,255,0.07);
+border-radius: 2px;
+overflow: hidden;
+margin-bottom: 8px;
+}
+.progress-fill {
+height: 100%;
+border-radius: 2px;
+transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.school-card-sub { font-size: 10px; color: var(–muted); }
+
+/* ── TABLE ── */
+.table-section {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 14px;
+overflow: hidden;
+}
+
+.table-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px 24px;
+border-bottom: 1px solid var(–border);
+}
+
+.table-title {
+font-size: 14px;
+font-weight: 600;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.filter-tabs {
+display: flex;
+gap: 4px;
+background: rgba(255,255,255,0.04);
+padding: 4px;
+border-radius: 8px;
+}
+.filter-tab {
+font-size: 11px;
+font-weight: 500;
+padding: 6px 14px;
+border-radius: 6px;
+cursor: pointer;
+color: var(–muted);
+border: none;
+background: transparent;
+font-family: ‘Outfit’, sans-serif;
+transition: all 0.15s;
+}
+.filter-tab.active { background: var(–card2); color: var(–text); }
+.filter-tab:hover:not(.active) { color: var(–text); }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+font-size: 10px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(–muted);
+padding: 12px 20px;
+text-align: left;
+background: rgba(255,255,255,0.02);
+font-weight: 500;
+cursor: pointer;
+user-select: none;
+white-space: nowrap;
+}
+thead th:hover { color: var(–text); }
+thead th .sort-arrow { opacity: 0.3; margin-left: 4px; }
+thead th.sorted .sort-arrow { opacity: 1; color: var(–gold); }
+
+tbody tr {
+border-top: 1px solid rgba(255,255,255,0.04);
+transition: background 0.1s;
+}
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody tr.checked-in { background: rgba(82,217,164,0.04); }
+
+td {
+padding: 14px 20px;
+font-size: 13px;
+vertical-align: middle;
+color: rgba(240,234,248,0.8);
+}
+
+.name-cell { font-weight: 600; color: var(–text); }
+
+.school-badge {
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 0.1em;
+padding: 4px 10px;
+border-radius: 4px;
+display: inline-block;
+}
+
+/* status pills */
+.status-pill {
+font-size: 10px;
+font-weight: 600;
+padding: 4px 12px;
+border-radius: 20px;
+display: inline-block;
+letter-spacing: 0.05em;
+}
+.status-in  { background: rgba(82,217,164,0.15);  color: var(–mint); border: 1px solid rgba(82,217,164,0.3); }
+.status-out { background: rgba(232,180,80,0.12);  color: var(–gold); border: 1px solid rgba(232,180,80,0.25); }
+
+/* CHECKBOX TOGGLE */
+.check-toggle {
+appearance: none;
+-webkit-appearance: none;
+width: 22px; height: 22px;
+border: 1.5px solid rgba(255,255,255,0.2);
+border-radius: 6px;
+background: transparent;
+cursor: pointer;
+position: relative;
+transition: all 0.2s;
+display: block;
+}
+.check-toggle:checked {
+background: var(–mint);
+border-color: var(–mint);
+}
+.check-toggle:checked::after {
+content: ‘✓’;
+position: absolute;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+color: #07060f;
+font-size: 13px;
+font-weight: 700;
+}
+.check-toggle:hover:not(:checked) { border-color: var(–mint); }
+
+.action-btn {
+background: transparent;
+border: 1px solid var(–border);
+color: var(–muted);
+font-size: 11px;
+padding: 5px 12px;
+border-radius: 6px;
+cursor: pointer;
+font-family: ‘Outfit’, sans-serif;
+transition: all 0.15s;
+}
+.action-btn:hover { border-color: var(–rose); color: var(–rose); }
+
+.empty-state {
+text-align: center;
+padding: 60px 20px;
+color: var(–muted);
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 16px; }
+.empty-state p { font-size: 14px; }
+
+/* ── TOAST ── */
+.toast {
+position: fixed;
+bottom: 32px; right: 32px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-left: 3px solid var(–mint);
+border-radius: 10px;
+padding: 14px 20px;
+font-size: 13px;
+min-width: 240px;
+transform: translateY(80px);
+opacity: 0;
+transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+z-index: 999;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.error { border-left-color: var(–danger); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+@media (max-width: 900px) {
+.sidebar { display: none; }
+.main { margin-left: 0; padding: 20px; }
+.stats-row { grid-template-columns: 1fr 1fr; }
+.school-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="wordmark">Naach</div>
+      <div class="sub">Leadership Admin</div>
+    </div>
+
+```
+<div class="sidebar-section">Overview</div>
+<div class="nav-item active" onclick="filterSchool('ALL')">
+  <span class="school-dot dot-all"></span>
+  All Schools
+  <span class="nav-badge" id="nav-total">0</span>
+</div>
+
+<div class="sidebar-section" style="margin-top:16px">By School</div>
+<div class="nav-item" onclick="filterSchool('CHS')"><span class="school-dot dot-chs"></span> CHS <span class="nav-badge" id="nav-chs">0</span></div>
+<div class="nav-item" onclick="filterSchool('PHS')"><span class="school-dot dot-phs"></span> PHS <span class="nav-badge" id="nav-phs">0</span></div>
+<div class="nav-item" onclick="filterSchool('Seneca')"><span class="school-dot dot-seneca"></span> Seneca <span class="nav-badge" id="nav-seneca">0</span></div>
+<div class="nav-item" onclick="filterSchool('NW')"><span class="school-dot dot-nw"></span> NW <span class="nav-badge" id="nav-nw">0</span></div>
+<div class="nav-item" onclick="filterSchool('RM')"><span class="school-dot dot-rm"></span> RM <span class="nav-badge" id="nav-rm">0</span></div>
+<div class="nav-item" onclick="filterSchool('Blair')"><span class="school-dot dot-blair"></span> Blair <span class="nav-badge" id="nav-blair">0</span></div>
+
+<div class="sidebar-footer">
+  <p>NAACH LEADERSHIP<br>ADMIN TEAM<br>2026–2027</p>
+</div>
+```
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+```
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-title">
+    Check-In <span>Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <input class="search-box" type="text" placeholder="🔍 Search by name, ID, school…" oninput="searchTable(this.value)" id="searchInput">
+    <button class="export-btn" onclick="exportCSV()">↓ Export CSV</button>
+  </div>
+</div>
+
+<!-- STAT CARDS -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-label">Total Registered</div>
+    <div class="stat-value" id="statTotal">0</div>
+    <div class="stat-sub">across all schools</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Checked In</div>
+    <div class="stat-value" id="statIn">0</div>
+    <div class="stat-sub" id="statInPct">0% arrival rate</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Remaining</div>
+    <div class="stat-value" id="statOut">0</div>
+    <div class="stat-sub">not yet arrived</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Schools Active</div>
+    <div class="stat-value" id="statSchools">6</div>
+    <div class="stat-sub">CHS · PHS · Seneca · NW · RM · Blair</div>
+  </div>
+</div>
+
+<!-- SCHOOL PROGRESS GRID -->
+<div class="school-grid" id="schoolGrid"></div>
+
+<!-- TABLE -->
+<div class="table-section">
+  <div class="table-header">
+    <div class="table-title">
+      <span>📋</span>
+      <span id="tableTitle">All Registrations</span>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setStatusFilter('all', this)">All</button>
+      <button class="filter-tab" onclick="setStatusFilter('in', this)">Checked In</button>
+      <button class="filter-tab" onclick="setStatusFilter('out', this)">Pending</button>
+    </div>
+  </div>
+  <div style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortBy('name')">Name <span class="sort-arrow">↕</span></th>
+          <th onclick="sortBy('school')">School <span class="sort-arrow">↕</span></th>
+          <th>Student ID</th>
+          <th>Email</th>
+          <th onclick="sortBy('status')">Status <span class="sort-arrow">↕</span></th>
+          <th style="text-align:center">Checked In</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+```
+
+  </main>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCHOOLS = ['CHS','PHS','Seneca','NW','RM','Blair'];
+const SCHOOL_COLORS = {
+  CHS:    { color:'#4fc3f7', bg:'rgba(79,195,247,0.12)',  dot:'dot-chs' },
+  PHS:    { color:'#ce93d8', bg:'rgba(206,147,216,0.12)', dot:'dot-phs' },
+  Seneca: { color:'#80cbc4', bg:'rgba(128,203,196,0.12)', dot:'dot-seneca' },
+  NW:     { color:'#ffb74d', bg:'rgba(255,183,77,0.12)',  dot:'dot-nw' },
+  RM:     { color:'#ef9a9a', bg:'rgba(239,154,154,0.12)', dot:'dot-rm' },
+  Blair:  { color:'#90caf9', bg:'rgba(144,202,249,0.12)', dot:'dot-blair' },
+};
+
+// ── DEMO DATA (seeded + reads from form submissions) ──
+const DEMO = [
+  { timestamp:'5/8/2026, 3:12 PM', name:'Aanya Sharma',   phone:'(301) 555-0142', email:'aanya@chs.edu',    studentId:'10234567', school:'CHS',    guestFile:'guest_form.pdf',  idFile:'aanya_id.jpg',   checkedIn:true,  status:'Checked In' },
+  { timestamp:'5/8/2026, 3:18 PM', name:'Dev Patel',       phone:'(301) 555-0219', email:'dev@chs.edu',      studentId:'10234568', school:'CHS',    guestFile:'guest_dev.pdf',   idFile:'dev_id.jpg',     checkedIn:false, status:'Registered' },
+  { timestamp:'5/8/2026, 3:25 PM', name:'Priya Mehta',     phone:'(240) 555-0334', email:'priya@phs.edu',    studentId:'20198745', school:'PHS',    guestFile:'priya_guest.pdf', idFile:'priya_id.jpg',   checkedIn:true,  status:'Checked In' },
+  { timestamp:'5/8/2026, 3:31 PM', name:'Rohan Iyer',      phone:'(301) 555-0487', email:'rohan@rm.edu',     studentId:'50112233', school:'RM',     guestFile:'rohan_guest.pdf', idFile:'rohan_id.jpg',   checkedIn:false, status:'Registered' },
+  { timestamp:'5/8/2026, 3:40 PM', name:'Simran Kaur',     phone:'(240) 555-0561', email:'simran@seneca.edu',studentId:'30445566', school:'Seneca', guestFile:'sim_guest.pdf',   idFile:'sim_id.jpg',     checkedIn:true,  status:'Checked In' },
+  { timestamp:'5/8/2026, 3:45 PM', name:'Arjun Nair',      phone:'(301) 555-0618', email:'arjun@blair.edu',  studentId:'60778899', school:'Blair',  guestFile:'arjun_guest.pdf', idFile:'arjun_id.jpg',   checkedIn:false, status:'Registered' },
+  { timestamp:'5/8/2026, 3:52 PM', name:'Meera Krishnan',  phone:'(240) 555-0702', email:'meera@nw.edu',     studentId:'40334455', school:'NW',     guestFile:'meera_guest.pdf', idFile:'meera_id.jpg',   checkedIn:true,  status:'Checked In' },
+  { timestamp:'5/8/2026, 4:00 PM', name:'Kabir Bhatt',     phone:'(301) 555-0891', email:'kabir@phs.edu',    studentId:'20556677', school:'PHS',    guestFile:'kabir_guest.pdf', idFile:'kabir_id.jpg',   checkedIn:false, status:'Registered' },
+  { timestamp:'5/8/2026, 4:07 PM', name:'Divya Rao',       phone:'(240) 555-0943', email:'divya@rm.edu',     studentId:'50998877', school:'RM',     guestFile:'divya_guest.pdf', idFile:'divya_id.jpg',   checkedIn:false, status:'Registered' },
+  { timestamp:'5/8/2026, 4:12 PM', name:'Tanvi Desai',     phone:'(301) 555-0174', email:'tanvi@seneca.edu', studentId:'30223344', school:'Seneca', guestFile:'tanvi_guest.pdf', idFile:'tanvi_id.jpg',   checkedIn:true,  status:'Checked In' },
+  { timestamp:'5/8/2026, 4:19 PM', name:'Siddharth Kumar', phone:'(240) 555-0256', email:'sid@chs.edu',      studentId:'10667788', school:'CHS',    guestFile:'sid_guest.pdf',   idFile:'sid_id.jpg',     checkedIn:false, status:'Registered' },
+  { timestamp:'5/8/2026, 4:25 PM', name:'Nisha Verma',     phone:'(301) 555-0382', email:'nisha@blair.edu',  studentId:'60112244', school:'Blair',  guestFile:'nisha_guest.pdf', idFile:'nisha_id.jpg',   checkedIn:true,  status:'Checked In' },
+];
+
+let registrations = [];
+let currentSchool = 'ALL';
+let currentStatus = 'all';
+let currentSearch = '';
+let sortField = 'name';
+let sortAsc = true;
+
+// ── LOAD DATA ──
+function loadData() {
+  const stored = JSON.parse(localStorage.getItem('naach_registrations') || '[]');
+  registrations = [...DEMO, ...stored];
+}
+
+// ── FILTER & SORT ──
+function getFiltered() {
+  return registrations.filter(r => {
+    const schoolOk = currentSchool === 'ALL' || r.school === currentSchool;
+    const statusOk = currentStatus === 'all' ||
+                     (currentStatus === 'in' && r.checkedIn) ||
+                     (currentStatus === 'out' && !r.checkedIn);
+    const q = currentSearch.toLowerCase();
+    const searchOk = !q || r.name.toLowerCase().includes(q) ||
+                     r.school.toLowerCase().includes(q) ||
+                     r.studentId.toLowerCase().includes(q) ||
+                     r.email.toLowerCase().includes(q);
+    return schoolOk && statusOk && searchOk;
+  }).sort((a,b) => {
+    let av = a[sortField]||'', bv = b[sortField]||'';
+    if (typeof av === 'boolean') { av = av?1:0; bv = bv?1:0; }
+    else { av = String(av).toLowerCase(); bv = String(bv).toLowerCase(); }
+    return sortAsc ? (av > bv ? 1 : -1) : (av < bv ? 1 : -1);
+  });
+}
+
+// ── RENDER ──
+function render() {
+  loadData();
+  updateStats();
+  renderSchoolGrid();
+  renderTable();
+  updateNavBadges();
+}
+
+function updateStats() {
+  const total = registrations.length;
+  const inCount = registrations.filter(r => r.checkedIn).length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statIn').textContent = inCount;
+  document.getElementById('statOut').textContent = total - inCount;
+  document.getElementById('statInPct').textContent =
+    total ? Math.round(inCount/total*100) + '% arrival rate' : '0% arrival rate';
+}
+
+function renderSchoolGrid() {
+  const total = registrations.length;
+  const grid = document.getElementById('schoolGrid');
+  grid.innerHTML = SCHOOLS.map(school => {
+    const sc = registrations.filter(r => r.school === school);
+    const inC = sc.filter(r => r.checkedIn).length;
+    const pct = sc.length ? Math.round(inC/sc.length*100) : 0;
+    const col = SCHOOL_COLORS[school];
+    return `
+    <div class="school-card ${currentSchool === school ? 'active-tab' : ''}" onclick="filterSchool('${school}')">
+      <div class="school-card-top">
+        <div class="school-card-name" style="color:${col.color}">${school}</div>
+        <div class="school-card-count" style="color:${col.color}">${inC}/${sc.length}</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${pct}%;background:${col.color}"></div>
+      </div>
+      <div class="school-card-sub">${pct}% checked in</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable() {
+  const filtered = getFiltered();
+  const tbody = document.getElementById('tableBody');
+  document.getElementById('tableTitle').textContent =
+    currentSchool === 'ALL' ? `All Registrations (${filtered.length})` : `${currentSchool} — ${filtered.length} students`;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="icon">🔍</div><p>No registrations found.</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((r, i) => {
+    const col = SCHOOL_COLORS[r.school] || { color:'#fff', bg:'rgba(255,255,255,0.1)' };
+    const realIdx = registrations.indexOf(r);
+    return `
+    <tr class="${r.checkedIn ? 'checked-in' : ''}" id="row-${realIdx}">
+      <td class="name-cell">${r.name}</td>
+      <td><span class="school-badge" style="color:${col.color};background:${col.bg}">${r.school}</span></td>
+      <td style="font-family:monospace;font-size:12px">${r.studentId}</td>
+      <td style="font-size:12px;color:var(--muted)">${r.email}</td>
+      <td><span class="status-pill ${r.checkedIn ? 'status-in' : 'status-out'}">${r.checkedIn ? '✓ Checked In' : 'Registered'}</span></td>
+      <td style="text-align:center">
+        <input type="checkbox" class="check-toggle" ${r.checkedIn ? 'checked' : ''} onchange="toggleCheckIn(${realIdx}, this)">
+      </td>
+      <td><button class="action-btn" onclick="removeRow(${realIdx})">Remove</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function updateNavBadges() {
+  document.getElementById('nav-total').textContent = registrations.length;
+  SCHOOLS.forEach(s => {
+    const el = document.getElementById('nav-' + s.toLowerCase());
+    if (el) el.textContent = registrations.filter(r => r.school === s).length;
+  });
+}
+
+// ── INTERACTIONS ──
+function filterSchool(school) {
+  currentSchool = school;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const label = school === 'ALL' ? 'All Schools' : school;
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.textContent.trim().startsWith(label.trim())) n.classList.add('active');
+  });
+  renderSchoolGrid();
+  renderTable();
+}
+
+function setStatusFilter(status, btn) {
+  currentStatus = status;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function searchTable(q) {
+  currentSearch = q;
+  renderTable();
+}
+
+function sortBy(field) {
+  if (sortField === field) sortAsc = !sortAsc;
+  else { sortField = field; sortAsc = true; }
+  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+  renderTable();
+}
+
+function toggleCheckIn(idx, checkbox) {
+  registrations[idx].checkedIn = checkbox.checked;
+  registrations[idx].status = checkbox.checked ? 'Checked In' : 'Registered';
+
+  // persist the non-demo ones
+  const stored = registrations.slice(DEMO.length);
+  localStorage.setItem('naach_registrations', JSON.stringify(stored));
+
+  const name = registrations[idx].name;
+  showToast(checkbox.checked ? `✓ ${name} checked in!` : `↩ ${name} marked as pending`);
+  render();
+}
+
+function removeRow(idx) {
+  const name = registrations[idx].name;
+  if (!confirm(`Remove ${name} from the list?`)) return;
+  if (idx < DEMO.length) {
+    showToast('Cannot remove demo entries.', true);
+    return;
+  }
+  const stored = registrations.slice(DEMO.length);
+  stored.splice(idx - DEMO.length, 1);
+  localStorage.setItem('naach_registrations', JSON.stringify(stored));
+  showToast(`${name} removed.`);
+  render();
+}
+
+function exportCSV() {
+  const headers = ['Timestamp','Full Name','Phone','Email','Student ID','School','Guest Form','ID Picture','Checked In','Status'];
+  const rows = registrations.map(r => [
+    r.timestamp, r.name, r.phone, r.email, r.studentId,
+    r.school, r.guestFile, r.idFile, r.checkedIn ? 'YES' : 'NO', r.status
+  ].map(v => `"${v}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'naach_leadership_2026_27.csv';
+  a.click();
+  showToast('CSV exported!');
+}
+
+let toastTimer;
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── INIT ──
+render();
+setInterval(render, 5000); // auto-refresh every 5s to catch new form submissions
+</script>
+
+</body>
+</html>
