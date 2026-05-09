@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naach Leadership 2026–27 · Event Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #080612;
+  --surface: #100d1e;
+  --card: #13101f;
+  --border: rgba(255,255,255,0.08);
+  --border-focus: rgba(232,180,80,0.6);
+  --gold: #e8b450;
+  --gold-light: #f5d07a;
+  --rose: #e05c8a;
+  --violet: #9d6ef5;
+  --text: #f0eaf8;
+  --muted: rgba(240,234,248,0.45);
+  --success: #52d9a4;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── ANIMATED BG ── */
+.bg-layer {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  overflow: hidden;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+.bg-orb:nth-child(1) { width: 600px; height: 600px; top: -200px; left: -150px; background: radial-gradient(circle, #5b1a8a, transparent 70%); animation-duration: 15s; }
+.bg-orb:nth-child(2) { width: 500px; height: 500px; top: 30%; right: -100px; background: radial-gradient(circle, #8a1a3a, transparent 70%); animation-duration: 11s; animation-delay: -4s; }
+.bg-orb:nth-child(3) { width: 400px; height: 400px; bottom: -100px; left: 30%; background: radial-gradient(circle, #1a3a8a, transparent 70%); animation-duration: 13s; animation-delay: -7s; }
+
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* grid lines */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── LAYOUT ── */
+.page {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 80px;
+}
+
+/* ── HEADER BANNER ── */
+.header {
+  width: 100%;
+  max-width: 680px;
+  padding: 60px 0 48px;
+  text-align: center;
+}
+
+.header-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(232,180,80,0.1);
+  border: 1px solid rgba(232,180,80,0.25);
+  padding: 6px 18px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+  animation: fadeDown 0.8s ease both;
+}
+
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 10vw, 88px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  animation: fadeDown 0.8s 0.1s ease both;
+}
+
+.header-title .line-1 { display: block; color: var(--text); }
+.header-title .line-2 {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(135deg, var(--gold), var(--rose), var(--violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-sub {
+  margin-top: 22px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  animation: fadeDown 0.8s 0.2s ease both;
+}
+
+.school-strip {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  animation: fadeDown 0.8s 0.3s ease both;
+}
+.school-chip {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  padding: 5px 14px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+.sc-chs    { color: #4fc3f7; border-color: rgba(79,195,247,0.3); background: rgba(79,195,247,0.06); }
+.sc-phs    { color: #ce93d8; border-color: rgba(206,147,216,0.3); background: rgba(206,147,216,0.06); }
+.sc-seneca { color: #80cbc4; border-color: rgba(128,203,196,0.3); background: rgba(128,203,196,0.06); }
+.sc-nw     { color: #ffb74d; border-color: rgba(255,183,77,0.3);  background: rgba(255,183,77,0.06); }
+.sc-rm     { color: #ef9a9a; border-color: rgba(239,154,154,0.3); background: rgba(239,154,154,0.06); }
+.sc-blair  { color: #90caf9; border-color: rgba(144,202,249,0.3); background: rgba(144,202,249,0.06); }
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── FORM CARD ── */
+.form-card {
+  width: 100%;
+  max-width: 620px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 44px 52px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.9s 0.35s ease both;
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--violet), var(--rose), var(--gold));
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.form-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── FIELD GROUPS ── */
+.field-group { margin-bottom: 20px; }
+.field-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.required-star { color: var(--rose); margin-left: 3px; }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input::placeholder { color: rgba(240,234,248,0.2); }
+
+input:focus, select:focus {
+  border-color: var(--border-focus);
+  background: rgba(232,180,80,0.04);
+  box-shadow: 0 0 0 3px rgba(232,180,80,0.08);
+}
+
+input.valid { border-color: rgba(82,217,164,0.4); }
+input.invalid { border-color: rgba(224,92,138,0.5); }
+
+/* select arrow */
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+  font-size: 12px;
+}
+select option { background: #1a1530; color: var(--text); }
+
+/* ── FILE UPLOAD ── */
+.upload-zone {
+  border: 1.5px dashed rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--gold);
+  background: rgba(232,180,80,0.05);
+}
+
+.upload-zone input[type="file"] {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer;
+  width: 100%; height: 100%;
+}
+
+.upload-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+.upload-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.upload-sub { font-size: 11px; color: var(--muted); }
+
+.upload-zone.has-file {
+  border-color: rgba(82,217,164,0.4);
+  background: rgba(82,217,164,0.05);
+}
+.file-name {
+  font-size: 12px;
+  color: var(--success);
+  margin-top: 6px;
+  font-weight: 500;
+  display: none;
+}
+.upload-zone.has-file .file-name { display: block; }
+.upload-zone.has-file .upload-icon::after { content: ' ✓'; font-size: 18px; }
+
+/* ── SUBMIT BUTTON ── */
+.submit-wrap { margin-top: 36px; }
+
+.submit-btn {
+  width: 100%;
+  padding: 17px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed, #c0255c, #d4900a);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.2s;
+  text-transform: uppercase;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #9b5cf7, #e0376f, #e8b450);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(192,37,92,0.4); }
+.submit-btn:hover::before { opacity: 1; }
+.submit-btn:active { transform: translateY(0); }
+.submit-btn span { position: relative; z-index: 1; }
+
+.submit-btn.loading span::after {
+  content: '';
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.form-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+/* ── SUCCESS SCREEN ── */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-screen.show { display: block; }
+.form-body.hidden { display: none; }
+
+.success-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--violet), var(--rose));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 24px;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--rose));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.success-sub { color: var(--muted); font-size: 14px; line-height: 1.7; }
+
+.success-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  text-align: left;
+}
+.success-card .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 13px;
+}
+.success-card .row:last-child { border-bottom: none; }
+.success-card .label { color: var(--muted); font-size: 11px; letter-spacing: 0.1em; }
+.success-card .value { font-weight: 500; color: var(--text); }
+
+.new-reg-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+  letter-spacing: 0.08em;
+}
+.new-reg-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── ERROR MSG ── */
+.field-error {
+  font-size: 11px;
+  color: var(--rose);
+  margin-top: 6px;
+  display: none;
+}
+.field-group.error .field-error { display: block; }
+.field-group.error input,
+.field-group.error select { border-color: rgba(224,92,138,0.5); }
+
+/* ── FOOTER ── */
+.page-footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(240,234,248,0.2);
+  letter-spacing: 0.15em;
+}
+
+@media (max-width: 560px) {
+  .form-card { padding: 32px 22px 40px; border-radius: 16px; }
+  .field-row  { grid-template-columns: 1fr; }
+  .header-title { font-size: 52px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+</div>
+<div class="bg-grid"></div>
+
+<div class="page">
+  <div class="header">
+    <div class="header-tag">✦ Naach Leadership · 2026–2027</div>
+    <h1 class="header-title">
+      <span class="line-1">Event</span>
+      <span class="line-2">Registration</span>
+    </h1>
+    <p class="header-sub">Complete all fields to secure your entry. Bring this confirmation to the door.</p>
+    <div class="school-strip">
+      <span class="school-chip sc-chs">CHS</span>
+      <span class="school-chip sc-phs">PHS</span>
+      <span class="school-chip sc-seneca">Seneca</span>
+      <span class="school-chip sc-nw">NW</span>
+      <span class="school-chip sc-rm">RM</span>
+      <span class="school-chip sc-blair">Blair</span>
+    </div>
+  </div>
+
+  <div class="form-card" id="formCard">
+
+    <!-- SUCCESS STATE -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're Registered!</div>
+      <p class="success-sub">Your information has been submitted.<br>See you at the event — bring your student ID!</p>
+      <div class="success-card" id="successDetails"></div>
+      <button class="new-reg-btn" onclick="resetForm()">Register Another Student</button>
+    </div>
+
+    <!-- FORM BODY -->
+    <div class="form-body" id="formBody">
+
+      <p class="form-section-title">Personal Information</p>
+
+      <div class="field-row">
+        <div class="field-group" id="fg-name">
+          <label>Full Name <span class="required-star">*</span></label>
+          <input type="text" id="fullName" placeholder="First Last" autocomplete="name">
+          <div class="field-error">Please enter your full name.</div>
+        </div>
+        <div class="field-group" id="fg-school">
+          <label>School <span class="required-star">*</span></label>
+          <div class="select-wrap">
+            <select id="school">
+              <option value="" disabled selected>Select school</option>
+              <option value="CHS">CHS</option>
+              <option value="PHS">PHS</option>
+              <option value="Seneca">Seneca</option>
+              <option value="NW">NW</option>
+              <option value="RM">RM</option>
+              <option value="Blair">Blair</option>
+            </select>
+          </div>
+          <div class="field-error">Please select your school.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group" id="fg-phone">
+          <label>Phone Number <span class="required-star">*</span></label>
+          <input type="tel" id="phone" placeholder="(555) 000-0000" autocomplete="tel">
+          <div class="field-error">Please enter a valid phone number.</div>
+        </div>
+        <div class="field-group" id="fg-studentId">
+          <label>Student ID # <span class="required-star">*</span></label>
+          <input type="text" id="studentId" placeholder="e.g. 12345678">
+          <div class="field-error">Please enter your student ID.</div>
+        </div>
+      </div>
+
+      <div class="field-group" id="fg-email">
+        <label>Email Address <span class="required-star">*</span></label>
+        <input type="email" id="email" placeholder="you@school.edu" autocomplete="email">
+        <div class="field-error">Please enter a valid email address.</div>
+      </div>
+
+      <p class="form-section-title" style="margin-top:32px">Required Documents</p>
+
+      <div class="field-group" id="fg-guestForm">
+        <label>Guest Form Upload <span class="required-star">*</span></label>
+        <div class="upload-zone" id="gz-guest">
+          <input type="file" id="guestForm" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this, 'gz-guest', 'gn-guest')">
+          <span class="upload-icon">📄</span>
+          <div class="upload-title">Click or drag your Guest Form here</div>
+          <div class="upload-sub">PDF, JPG, or PNG · Max 10 MB</div>
+          <div class="file-name" id="gn-guest"></div>
+        </div>
+        <div class="field-error">Please upload your guest form.</div>
+      </div>
+
+      <div class="field-group" style="margin-top:16px" id="fg-idPic">
+        <label>Student ID Photo <span class="required-star">*</span></label>
+        <div class="upload-zone" id="gz-id">
+          <input type="file" id="idPicture" accept=".jpg,.jpeg,.png" onchange="handleFile(this, 'gz-id', 'gn-id')">
+          <span class="upload-icon">🪪</span>
+          <div class="upload-title">Click or drag your Student ID photo here</div>
+          <div class="upload-sub">JPG or PNG · Max 10 MB</div>
+          <div class="file-name" id="gn-id"></div>
+        </div>
+        <div class="field-error">Please upload a photo of your student ID.</div>
+      </div>
+
+      <div class="submit-wrap">
+        <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+          <span id="submitLabel">Submit Registration →</span>
+        </button>
+        <p class="form-note">
+          All info is collected solely for Naach Leadership event check-in.<br>
+          Fields marked <span style="color:var(--rose)">*</span> are required.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <p>NAACH LEADERSHIP ADMIN TEAM · 2026–2027</p>
+    <p style="margin-top:6px; opacity:0.6">CHS · PHS · SENECA · NW · RM · BLAIR</p>
+  </div>
+</div>
+
+<script>
+// ── FILE UPLOAD HANDLER ──
+function handleFile(input, zoneId, nameId) {
+  const zone = document.getElementById(zoneId);
+  const nameEl = document.getElementById(nameId);
+  if (input.files && input.files[0]) {
+    zone.classList.add('has-file');
+    nameEl.textContent = '✓ ' + input.files[0].name;
+  } else {
+    zone.classList.remove('has-file');
+    nameEl.textContent = '';
+  }
+}
+
+// drag-over style
+document.querySelectorAll('.upload-zone').forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const input = zone.querySelector('input[type="file"]');
+    const nameId = zone.id === 'gz-guest' ? 'gn-guest' : 'gn-id';
+    if (e.dataTransfer.files.length) {
+      input.files = e.dataTransfer.files;
+      handleFile(input, zone.id, nameId);
+    }
+  });
+});
+
+// ── PHONE FORMATTING ──
+document.getElementById('phone').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'');
+  if (v.length >= 6) v = '(' + v.slice(0,3) + ') ' + v.slice(3,6) + '-' + v.slice(6,10);
+  else if (v.length >= 3) v = '(' + v.slice(0,3) + ') ' + v.slice(3);
+  this.value = v;
+});
+
+// ── VALIDATION ──
+function validate() {
+  let valid = true;
+  const checks = [
+    { id: 'fullName',  fg: 'fg-name',     fn: v => v.trim().length > 1 },
+    { id: 'school',    fg: 'fg-school',   fn: v => v !== '' },
+    { id: 'phone',     fg: 'fg-phone',    fn: v => v.replace(/\D/g,'').length >= 10 },
+    { id: 'studentId', fg: 'fg-studentId',fn: v => v.trim().length > 0 },
+    { id: 'email',     fg: 'fg-email',    fn: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+  ];
+  checks.forEach(c => {
+    const el = document.getElementById(c.id);
+    const fg = document.getElementById(c.fg);
+    if (!c.fn(el.value)) { fg.classList.add('error'); valid = false; }
+    else fg.classList.remove('error');
+  });
+
+  // file checks
+  const guestOk = document.getElementById('guestForm').files.length > 0;
+  const idOk    = document.getElementById('idPicture').files.length > 0;
+  document.getElementById('fg-guestForm').classList.toggle('error', !guestOk);
+  document.getElementById('fg-idPic').classList.toggle('error', !idOk);
+  if (!guestOk || !idOk) valid = false;
+
+  return valid;
+}
+
+// ── SUBMIT ──
+function handleSubmit() {
+  if (!validate()) {
+    document.querySelector('.field-group.error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  document.getElementById('submitLabel').textContent = 'Submitting...';
+  btn.disabled = true;
+
+  // Collect data
+  const data = {
+    timestamp:  new Date().toLocaleString(),
+    name:       document.getElementById('fullName').value.trim(),
+    phone:      document.getElementById('phone').value.trim(),
+    email:      document.getElementById('email').value.trim(),
+    studentId:  document.getElementById('studentId').value.trim(),
+    school:     document.getElementById('school').value,
+    guestFile:  document.getElementById('guestForm').files[0]?.name || '—',
+    idFile:     document.getElementById('idPicture').files[0]?.name || '—',
+    checkedIn:  false,
+    status:     'Registered'
+  };
+
+  // Store locally (replaces Google Sheets in this demo)
+  const existing = JSON.parse(localStorage.getItem('naach_registrations') || '[]');
+  existing.push(data);
+  localStorage.setItem('naach_registrations', JSON.stringify(existing));
+
+  setTimeout(() => {
+    // Show success
+    document.getElementById('formBody').classList.add('hidden');
+    const success = document.getElementById('successScreen');
+    success.classList.add('show');
+
+    document.getElementById('successDetails').innerHTML = `
+      <div class="row"><span class="label">NAME</span><span class="value">${data.name}</span></div>
+      <div class="row"><span class="label">SCHOOL</span><span class="value">${data.school}</span></div>
+      <div class="row"><span class="label">STUDENT ID</span><span class="value">${data.studentId}</span></div>
+      <div class="row"><span class="label">EMAIL</span><span class="value">${data.email}</span></div>
+      <div class="row"><span class="label">STATUS</span><span class="value" style="color:var(--success)">✓ Registered</span></div>
+    `;
+
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }, 1600);
+}
+
+function resetForm() {
+  document.getElementById('formBody').classList.remove('hidden');
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('submitLabel').textContent = 'Submit Registration →';
+  document.querySelectorAll('input[type=text], input[type=email], input[type=tel]').forEach(i => i.value = '');
+  document.getElementById('school').value = '';
+  document.getElementById('guestForm').value = '';
+  document.getElementById('idPicture').value = '';
+  document.querySelectorAll('.upload-zone').forEach(z => z.classList.remove('has-file'));
+  document.querySelectorAll('.file-name').forEach(n => n.textContent = '');
+  document.querySelectorAll('.field-group').forEach(fg => fg.classList.remove('error'));
+}
+</script>
+</body>
+</html>
